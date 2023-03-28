@@ -4,7 +4,8 @@ import './App.css';
 import { useState } from 'react';
 
 function App() {
-  const [todo, setTodo] = useState([])
+  const data = JSON.parse(localStorage.getItem('todo'));
+  const [todo, setTodo] = useState(data ? data : [])
   const newId = Date.now();
 
   function handleAddTodo(text) {
@@ -34,7 +35,7 @@ function App() {
 
   }
 
-  console.log(todo)
+  localStorage.setItem('todo', JSON.stringify(todo));
 
   return (
     <div className="container mx-auto">
