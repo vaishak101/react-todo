@@ -1,46 +1,35 @@
 import Header from './components/Header/Header'
 import Card from './components/Todo/Card';
 import './App.css';
-import { useState } from 'react';
+import { useReducer } from 'react';
+import { todoReducer } from './assets/reducer';
+
+const localData = JSON.parse(localStorage.getItem('todo'));
+let data = []
+if (localData) { data = localData }
 
 function App() {
-  const data = JSON.parse(localStorage.getItem('todo'));
-  const [todo, setTodo] = useState(data ? data : [])
-  const newId = Date.now();
+  const [todoState, dispatch] = useReducer(todoReducer, data)
 
   function handleAddTodo(text) {
-    setTodo([
-      {
-        id: newId,
-        title: text
-      },
-      ...todo
-    ])
+    dispatch({ type: 'add_todo', val: text },)
   }
 
   function deleteTodo(removeTodoID) {
-    setTodo(todo.filter(item => item.id !== removeTodoID));
+    dispatch({ type: 'delete_todo', remvId: removeTodoID },)
   }
 
-  function updateTodo(todoId, newVal) {
-    const transformed = todo.map((item) => {
-      if (item.id === todoId) {
-        return { id: todoId, title: newVal }
-      }
-      else {
-        return item
-      }
-    })
-    setTodo(transformed);
+  function updateTodo(todoId, newValue) {
+    dispatch({ type: 'update_todo', searchId: todoId, newVal: newValue },)
 
   }
 
-  localStorage.setItem('todo', JSON.stringify(todo));
+  localStorage.setItem('todo', JSON.stringify(todoState));
 
   return (
     <div className="container mx-auto">
       <Header />
-      <Card todo={todo} handleAddTodo={handleAddTodo} deleteTodo={deleteTodo} updateTodo={updateTodo} />
+      <Card todo={todoState} handleAddTodo={handleAddTodo} deleteTodo={deleteTodo} updateTodo={updateTodo} />
     </div>
   );
 }

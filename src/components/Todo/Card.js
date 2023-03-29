@@ -20,7 +20,7 @@ export default function Card({ todo, handleAddTodo, deleteTodo, updateTodo }) {
       </section>
       <section className='list_section'>
         <ul >
-          {todo.map((item) => <List todoDetail={item} key={item.id} handleDeleteTodo={deleteTodo} handleUpdate={updateTodo} />)}
+          {todo.length > 0 ? todo.map((item) => <List todoDetail={item} key={item.id} handleDeleteTodo={deleteTodo} handleUpdate={updateTodo} />) : "No todos"}
         </ul>
       </section>
 
