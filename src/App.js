@@ -1,38 +1,24 @@
 import Header from './components/Header/Header'
 import Card from './components/Todo/Card';
 import './App.css';
-import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { add, removeTodo, editTodo } from './features/todo/todoSlice';
+
 
 function App() {
-  const data = JSON.parse(localStorage.getItem('todo'));
-  const [todo, setTodo] = useState(data ? data : [])
-  const newId = Date.now();
+  const todo = useSelector((state) => state.todo.value)
+  const dispatch = useDispatch()
 
   function handleAddTodo(text) {
-    setTodo([
-      {
-        id: newId,
-        title: text
-      },
-      ...todo
-    ])
+    dispatch(add(text))
   }
 
   function deleteTodo(removeTodoID) {
-    setTodo(todo.filter(item => item.id !== removeTodoID));
+    dispatch(removeTodo(removeTodoID))
   }
 
-  function updateTodo(todoId, newVal) {
-    const transformed = todo.map((item) => {
-      if (item.id === todoId) {
-        return { id: todoId, title: newVal }
-      }
-      else {
-        return item
-      }
-    })
-    setTodo(transformed);
-
+  function updateTodo(todoId, newValue) {
+    dispatch(editTodo({ id: todoId, title: newValue }))
   }
 
   localStorage.setItem('todo', JSON.stringify(todo));

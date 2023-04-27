@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 
 export default function List({ todoDetail, handleDeleteTodo, handleUpdate }) {
-
   const [editing, setEditing] = useState(false)
   const [currentVal, setCurrentVal] = useState(todoDetail.title)
 
